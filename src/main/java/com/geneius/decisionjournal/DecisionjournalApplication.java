@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class DecisionjournalApplication {
 
 	public static void main(String[] args) {
-                // ConfigurableApplicationContext context = SpringApplication.run(DecisionjournalApplication.class, args);
-		SpringApplication.run(DecisionjournalApplication.class, args);
+   SpringApplication.run(DecisionjournalApplication.class, args);
 	}
 }

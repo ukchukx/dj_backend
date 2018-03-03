@@ -18,18 +18,29 @@ import java.util.Date;
 public class DecisionJournal {
   @Id
   private String id;
+  private String accountId;
   private String index;
   private long date;
   private long reviewDate;
+  @Lob
   private String decision;
+  @Lob
   private String situation;
+  @Lob
   private String problemStatement;
+  @Lob
   private String variables;
+  @Lob
   private String complications;
+  @Lob
   private String alternatives;
+  @Lob
   private String outcomeRange;
+  @Lob
   private String expectations;
+  @Lob
   private String outcome;
+  @Lob
   private String whatHappened;
   private boolean energized;
   private boolean focused;
@@ -37,12 +48,12 @@ public class DecisionJournal {
   private boolean confident;
   private boolean tired;
   private boolean accepting;
-  private boolean accomodating;
+  private boolean accommodating;
   private boolean anxious;
   private boolean resigned;
   private boolean frustrated;
   private boolean angry;
-  private boolean high;
+  private boolean excited;
   @Column(nullable = false, updatable = false)
   @Temporal(TemporalType.TIMESTAMP)
   @CreatedDate
