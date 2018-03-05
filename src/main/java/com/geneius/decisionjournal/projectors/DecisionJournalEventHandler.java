@@ -17,6 +17,7 @@ public class DecisionJournalEventHandler {
   public void on(DecisionJournalCreated decisionJournalCreated) {
     DecisionJournal decisionJournal = new DecisionJournal();
     decisionJournal.setId(decisionJournalCreated.getDecisionJournalId());
+    decisionJournal.setAccountId(decisionJournalCreated.getAccountId());
     decisionJournal.setIndex(decisionJournalCreated.getIndex());
     decisionJournal.setDate(decisionJournalCreated.getDate());
     decisionJournal.setReviewDate(decisionJournalCreated.getReviewDate());
@@ -48,8 +49,7 @@ public class DecisionJournalEventHandler {
 
   @EventHandler
   public void on(DecisionJournalWhatHappenedChanged changed) {
-    DecisionJournal decisionJournal = new DecisionJournal();
-    decisionJournal.setId(changed.getDecisionJournalId());
+    DecisionJournal decisionJournal = decisionJournalService.getById(changed.getDecisionJournalId()).get();
     decisionJournal.setWhatHappened(changed.getWhatHappened());
     decisionJournalService.save(decisionJournal);
   }

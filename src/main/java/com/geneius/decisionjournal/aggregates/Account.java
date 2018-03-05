@@ -4,19 +4,20 @@ import com.geneius.decisionjournal.aggregates.exceptions.InvalidCommandException
 import com.geneius.decisionjournal.commands.CreateAccount;
 import com.geneius.decisionjournal.commands.UpdateAccount;
 import com.geneius.decisionjournal.events.AccountCreated;
+import com.geneius.decisionjournal.events.AccountDisabled;
 import com.geneius.decisionjournal.events.AccountNameChanged;
 import com.geneius.decisionjournal.events.AccountPasswordChanged;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.UUID;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
@@ -25,19 +26,16 @@ import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 @Entity
 public class Account {
   @Id
-  private String accountId;
+  private UUID accountId;
   @Basic
   private String email;
   @Basic
   private String name;
   @Basic
   private String password;
+  @Basic
+  private boolean enabled;
 
-  private static Set<String> emailSet;
-
-  static {
-    emailSet = new HashSet(50);
-  }
 
   @CommandHandler
   public Account(CreateAccount createAccount) throws InvalidCommandException {
@@ -47,6 +45,7 @@ public class Account {
       accountCreated.setEmail(createAccount.getEmail());
       accountCreated.setPassword(createAccount.getPassword());
       accountCreated.setName(createAccount.getName());
+      accountCreated.setEnabled(createAccount.isEnabled());
 
       apply(accountCreated);
     } else {
@@ -60,10 +59,15 @@ public class Account {
       String newName = updateAccount.getName(),
               newPassword = updateAccount.getPassword();
       if (newName != null && !newName.equals(this.name)) {
-        apply(new AccountNameChanged(this.accountId, newName));
+        apply(new AccountNameChanged(updateAccount.getAccountId(), newName));
       }
+
       if (newPassword != null && !newPassword.equals(this.password)) {
-        apply(new AccountPasswordChanged(this.accountId, newPassword));
+        apply(new AccountPasswordChanged(updateAccount.getAccountId(), newPassword));
+      }
+
+      if (enabled && updateAccount.isDisabled()) {
+        apply(new AccountDisabled(updateAccount.getAccountId()));
       }
     } else {
       throw new InvalidCommandException();
@@ -76,6 +80,7 @@ public class Account {
     email = accountCreated.getEmail();
     password = accountCreated.getPassword();
     name = accountCreated.getName();
+    enabled = accountCreated.isEnabled();
   }
 
   @EventSourcingHandler
@@ -86,5 +91,10 @@ public class Account {
   @EventSourcingHandler
   public void on(AccountPasswordChanged accountPasswordChanged) {
     password = accountPasswordChanged.getPassword();
+  }
+
+  @EventSourcingHandler
+  public void on(AccountDisabled accountDisabled) {
+    enabled = false;
   }
 }

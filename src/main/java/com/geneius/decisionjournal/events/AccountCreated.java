@@ -4,11 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 public class AccountCreated {
-  private String accountId;
+  private UUID accountId;
   private String email;
   private String name;
   private String password;
+  private boolean enabled;
 }

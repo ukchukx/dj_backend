@@ -9,19 +9,12 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class CreateAccount implements ValidatedCommand {
-  private String accountId;
+  private UUID accountId;
   private String email;
   private String password;
   private String name;
+  private boolean enabled = true;
 
-
-  public void setAccountId(String accountId) {
-    this.accountId = accountId.trim();
-  }
-
-  public void setAccountId(UUID uuid) {
-    this.accountId = uuid.toString();
-  }
 
   public void setEmail(String email) {
     this.email = email.trim();
@@ -37,7 +30,7 @@ public class CreateAccount implements ValidatedCommand {
 
   @Override
   public boolean isValid() {
-    return accountId != null && !accountId.isEmpty() &&
+    return accountId != null &&
         email != null && !email.isEmpty() &&
         password != null && !password.isEmpty() &&
         name != null && !name.isEmpty();

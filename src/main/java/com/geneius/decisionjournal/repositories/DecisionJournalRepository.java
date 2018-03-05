@@ -6,10 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface DecisionJournalRepository extends JpaRepository<DecisionJournal, String> {
-  List<DecisionJournal> findByAccountId(String accountId);
+public interface DecisionJournalRepository extends JpaRepository<DecisionJournal, UUID> {
+  List<DecisionJournal> findByAccountId(UUID accountId);
 
-  Optional<DecisionJournal> findByIdAndIndex(String id, String index);
+  Optional<DecisionJournal> findByIdAndIndex(UUID id, String index);
 }

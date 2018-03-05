@@ -3,6 +3,7 @@ package com.geneius.decisionjournal.aggregates;
 import com.geneius.decisionjournal.commands.CreateAccount;
 import com.geneius.decisionjournal.commands.UpdateAccount;
 import com.geneius.decisionjournal.events.AccountCreated;
+import com.geneius.decisionjournal.events.AccountDisabled;
 import com.geneius.decisionjournal.events.AccountNameChanged;
 import com.geneius.decisionjournal.events.AccountPasswordChanged;
 import org.axonframework.test.aggregate.AggregateTestFixture;
@@ -30,6 +31,7 @@ public class AccountTest {
     accountCreated.setName(createAccount.getName());
     accountCreated.setPassword(createAccount.getPassword());
     accountCreated.setEmail(createAccount.getEmail());
+    accountCreated.setEnabled(createAccount.isEnabled());
     return accountCreated;
   }
 
@@ -55,14 +57,17 @@ public class AccountTest {
     updateAccount.setAccountId(accountCreated.getAccountId());
     updateAccount.setName("New name");
     updateAccount.setPassword("newPassword");
+    updateAccount.setDisabled(true);
 
     AccountNameChanged accountNameChanged = new AccountNameChanged(accountCreated.getAccountId(),
         updateAccount.getName());
     AccountPasswordChanged accountPasswordChanged = new AccountPasswordChanged(accountCreated.getAccountId(),
         updateAccount.getPassword());
 
+    AccountDisabled accountDisabled = new AccountDisabled(accountCreated.getAccountId());
+
     fixture.given(accountCreated)
         .when(updateAccount)
-        .expectEvents(accountNameChanged, accountPasswordChanged);
+        .expectEvents(accountNameChanged, accountPasswordChanged, accountDisabled);
   }
 }

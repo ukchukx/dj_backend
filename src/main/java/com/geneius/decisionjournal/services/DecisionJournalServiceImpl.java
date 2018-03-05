@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class DecisionJournalServiceImpl implements DecisionJournalService {
@@ -19,7 +20,7 @@ public class DecisionJournalServiceImpl implements DecisionJournalService {
   }
 
   @Override
-  public List<DecisionJournal> listByAccount(String id) {
+  public List<DecisionJournal> listByAccount(UUID id) {
     return decisionJournalRepository.findByAccountId(id);
   }
 
@@ -29,12 +30,17 @@ public class DecisionJournalServiceImpl implements DecisionJournalService {
   }
 
   @Override
-  public Optional<DecisionJournal> getById(String id) {
+  public Optional<DecisionJournal> getById(UUID id) {
     return decisionJournalRepository.findById(id);
   }
 
   @Override
-  public Optional<DecisionJournal> getByIdAndIndex(String id, String index) {
+  public Optional<DecisionJournal> getByIdAndIndex(UUID id, String index) {
     return decisionJournalRepository.findByIdAndIndex(id, index);
+  }
+
+  @Override
+  public void deleteAll() {
+    decisionJournalRepository.deleteAll();
   }
 }

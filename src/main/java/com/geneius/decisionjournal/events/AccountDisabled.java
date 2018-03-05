@@ -9,7 +9,6 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DecisionJournalWhatHappenedChanged {
-  private UUID decisionJournalId;
-  private String whatHappened;
+public class AccountDisabled {
+  private UUID accountId;
 }

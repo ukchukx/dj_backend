@@ -10,15 +10,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UpdateDecisionJournal implements ValidatedCommand {
   @TargetAggregateIdentifier
-  private String decisionJournalId;
+  private UUID decisionJournalId;
   private String whatHappened;
-
-
-  public void setDecisionJournalId(String decisionJournalId) {
-    this.decisionJournalId = decisionJournalId;
-  }
-
-  public void setDecisionJournalId(UUID decisionJournalId) {
-    this.decisionJournalId = decisionJournalId.toString();
-  }
 }

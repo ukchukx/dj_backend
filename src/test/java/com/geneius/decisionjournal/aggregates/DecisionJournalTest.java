@@ -18,7 +18,7 @@ public class DecisionJournalTest {
   private CreateDecisionJournal buildCreateCommand() {
     CreateDecisionJournal create = new CreateDecisionJournal();
     create.setDecisionJournalId(UUID.randomUUID());
-    create.setAccountId(UUID.randomUUID().toString());
+    create.setAccountId(UUID.randomUUID());
     create.setIndex("1");
     create.setDate(new Date().getTime());
     create.setReviewDate(new Date().getTime());

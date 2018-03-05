@@ -2,6 +2,7 @@ package com.geneius.decisionjournal.projectors;
 
 import com.geneius.decisionjournal.entities.Account;
 import com.geneius.decisionjournal.events.AccountCreated;
+import com.geneius.decisionjournal.events.AccountDisabled;
 import com.geneius.decisionjournal.events.AccountNameChanged;
 import com.geneius.decisionjournal.events.AccountPasswordChanged;
 import com.geneius.decisionjournal.services.AccountService;
@@ -22,22 +23,28 @@ public class AccountEventHandler {
     account.setEmail(accountCreated.getEmail());
     account.setName(accountCreated.getName());
     account.setPassword(accountCreated.getPassword());
+    account.setEnabled(accountCreated.isEnabled());
     accountService.save(account);
   }
 
   @EventHandler
   public void on(AccountNameChanged accountNameChanged) {
-    Account account = new Account();
-    account.setId(accountNameChanged.getAccountId());
+    Account account = accountService.getById(accountNameChanged.getAccountId()).get();
     account.setName(accountNameChanged.getName());
     accountService.save(account);
   }
 
   @EventHandler
   public void on(AccountPasswordChanged accountPasswordChanged) {
-    Account account = new Account();
-    account.setId(accountPasswordChanged.getAccountId());
+    Account account = accountService.getById(accountPasswordChanged.getAccountId()).get();
     account.setPassword(accountPasswordChanged.getPassword());
+    accountService.save(account);
+  }
+
+  @EventHandler
+  public void on(AccountDisabled accountDisabled) {
+    Account account = accountService.getById(accountDisabled.getAccountId()).get();
+    account.setEnabled(false);
     accountService.save(account);
   }
 }

@@ -5,11 +5,11 @@
 
 	<groupId>com.geneius</groupId>
 	<artifactId>decisionjournal</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>decisionjournal</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Decision Journal REST API</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -19,6 +19,7 @@
 	</parent>
 
 	<properties>
+        <activeProfile>dev</activeProfile>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
@@ -26,6 +27,29 @@
 		<axon.test.version>3.0</axon.test.version>
 		<axon.spring.boot.autoconfigure.version>3.0</axon.spring.boot.autoconfigure.version>
 	</properties>
+    <profiles>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <activeProfile>prod</activeProfile>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <activeProfile>dev</activeProfile>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <activeProfile>test</activeProfile>
+            </properties>
+        </profile>
+    </profiles>
 
 	<dependencies>
 		<dependency>
@@ -54,6 +78,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.8.0</version>
+        </dependency>
 		<dependency>
 			<groupId>org.axonframework</groupId>
 			<artifactId>axon-core</artifactId>

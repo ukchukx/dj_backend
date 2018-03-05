@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class DecisionJournalCreated {
-  private String decisionJournalId;
-  private String accountId;
+  private UUID decisionJournalId;
+  private UUID accountId;
   private String index;
   private long date;
   private long reviewDate;

@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.hibernate.annotations.Type;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
+
+import java.util.UUID;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
@@ -22,40 +22,40 @@ import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 @Entity
 public class DecisionJournal {
   @Id
-  private String decisionJournalId;
-  private String accountId;
+  private UUID decisionJournalId;
+  private UUID accountId;
   @Basic
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String index;
   @Basic
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String decision;
   @Basic
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String situation;
   @Basic
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String problemStatement;
   @Basic
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String variables;
   @Basic
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String complications;
   @Basic
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String alternatives;
   @Basic
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String outcomeRange;
   @Basic
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String expectations;
   @Basic
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String outcome;
   @Basic
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String whatHappened;
   @Basic
   private boolean energized;
@@ -176,7 +176,7 @@ public class DecisionJournal {
 
   @EventSourcingHandler
   public void on(DecisionJournalWhatHappenedChanged changed) {
-    this.whatHappened = changed.getWhatHappened();
+    whatHappened = changed.getWhatHappened();
   }
 
 }

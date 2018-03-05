@@ -8,8 +8,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class CreateDecisionJournal implements ValidatedCommand {
-  private String decisionJournalId;
-  private String accountId;
+  private UUID decisionJournalId;
+  private UUID  accountId;
   private String index;
   private String decision;
   private String situation;
@@ -35,15 +35,6 @@ public class CreateDecisionJournal implements ValidatedCommand {
   private boolean excited;
   private long date;
   private long reviewDate;
-
-
-  public void setDecisionJournalId(String decisionJournalId) {
-    this.decisionJournalId = decisionJournalId;
-  }
-
-  public void setDecisionJournalId(UUID decisionJournalId) {
-    this.decisionJournalId = decisionJournalId.toString();
-  }
 
   public void setWhatHappened(String whatHappened) {
 

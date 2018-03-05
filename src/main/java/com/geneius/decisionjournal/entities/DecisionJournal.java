@@ -1,46 +1,48 @@
 package com.geneius.decisionjournal.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @Entity
+@Table(name = "decision_journals")
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(allowGetters = true, value = {"createdAt", "updatedAt"})
 public class DecisionJournal {
   @Id
-  private String id;
-  private String accountId;
+  @Type(type="pg-uuid")
+  private UUID id;
+  private UUID accountId;
   private String index;
   private long date;
   private long reviewDate;
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String decision;
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String situation;
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String problemStatement;
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String variables;
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String complications;
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String alternatives;
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String outcomeRange;
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String expectations;
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String outcome;
-  @Lob
+  @Column(columnDefinition = "TEXT", nullable = false)
   private String whatHappened;
   private boolean energized;
   private boolean focused;
