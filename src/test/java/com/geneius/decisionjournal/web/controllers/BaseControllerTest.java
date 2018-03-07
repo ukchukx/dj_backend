@@ -3,10 +3,8 @@ package com.geneius.decisionjournal.web.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.geneius.decisionjournal.DecisionjournalApplication;
 import com.geneius.decisionjournal.services.AccountService;
-import com.geneius.decisionjournal.services.DecisionJournalService;
-import com.geneius.decisionjournal.web.security.WebSecurity;
+import com.geneius.decisionjournal.services.JournalService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -14,13 +12,7 @@ import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,7 +29,7 @@ import java.util.Map;
 public class BaseControllerTest {
   @Autowired protected WebApplicationContext context;
   @Autowired protected AccountService accountService;
-  @Autowired protected DecisionJournalService decisionJournalService;
+  @Autowired protected JournalService journalService;
 
   protected MockMvc mockMvc;
 
@@ -52,7 +44,7 @@ public class BaseControllerTest {
   @After
   public void tearDown() {
     accountService.deleteAll();
-    decisionJournalService.deleteAll();
+    journalService.deleteAll();
   }
 
   protected byte[] toJson(Object obj) throws JsonProcessingException {

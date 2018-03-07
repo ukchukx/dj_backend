@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface DecisionJournalService {
+public interface JournalService {
   List<Journal> listDecisionJournals();
   List<Journal> listByAccount(UUID id);
   Journal save(Journal journal);

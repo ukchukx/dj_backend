@@ -5,7 +5,7 @@ import com.geneius.decisionjournal.commands.UpdateDecisionJournal;
 import com.geneius.decisionjournal.entities.Account;
 import com.geneius.decisionjournal.entities.Journal;
 import com.geneius.decisionjournal.services.AccountService;
-import com.geneius.decisionjournal.services.DecisionJournalService;
+import com.geneius.decisionjournal.services.JournalService;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.callbacks.LoggingCallback;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,9 @@ import static org.axonframework.commandhandling.GenericCommandMessage.asCommandM
 
 @RestController
 @Secured("ROLE_USER")
-public class DecisionJournalController {
+public class JournalController {
   @Autowired
-  private DecisionJournalService decisionJournalService;
+  private JournalService journalService;
 
   @Autowired
   private AccountService accountService;
@@ -33,17 +33,17 @@ public class DecisionJournalController {
   @Autowired
   private ApplicationContext context;
 
-  @RequestMapping(value = "/decisionJournals.list", method = {RequestMethod.GET, RequestMethod.POST})
+  @RequestMapping(value = "/journals.list", method = {RequestMethod.GET, RequestMethod.POST})
   public ResponseEntity<?> list(Principal principal) {
     Account account = accountService.getAccountFromPrincipal(principal);
-    List<Journal> journals = decisionJournalService.listByAccount(account.getId());
+    List<Journal> journals = journalService.listByAccount(account.getId());
     return new ResponseEntity(getData(journals), HttpStatus.OK);
   }
 
-  @RequestMapping(value = "/decisionJournals.get", method = {RequestMethod.GET, RequestMethod.POST})
+  @RequestMapping(value = "/journals.get", method = {RequestMethod.GET, RequestMethod.POST})
   public ResponseEntity<?> getDecisionJournal(@RequestBody Map<String, String> body) {
     String id = body.getOrDefault("id", "").toString();
-    Optional<Journal> optional = decisionJournalService.getById(UUID.fromString(id));
+    Optional<Journal> optional = journalService.getById(UUID.fromString(id));
     if (optional.isPresent()) {
       return new ResponseEntity(getData(optional.get()), HttpStatus.OK);
     } else {
@@ -53,7 +53,7 @@ public class DecisionJournalController {
     }
   }
 
-  @RequestMapping(value = "/decisionJournals.create", method = {RequestMethod.GET, RequestMethod.POST})
+  @RequestMapping(value = "/journals.create", method = {RequestMethod.GET, RequestMethod.POST})
   public ResponseEntity<?> create(@RequestBody Map<String, Object> body, Principal principal) {
     Map<String, Object> errMap = new HashMap<>(1);
     Account account = accountService.getAccountFromPrincipal(principal);
@@ -62,21 +62,21 @@ public class DecisionJournalController {
     CommandBus bus = context.getBean(CommandBus.class);
     CreateDecisionJournal command = buildCreateCommand(body);
 
-    if (decisionJournalService.getByAccountIdAndIndex(command.getAccountId(), command.getIndex()).isPresent()) {
+    if (journalService.getByAccountIdAndIndex(command.getAccountId(), command.getIndex()).isPresent()) {
       errMap.put("errorMessage", String.format("Index already used"));
       return new ResponseEntity(errMap, HttpStatus.BAD_REQUEST);
     }
 
     bus.dispatch(asCommandMessage(command), LoggingCallback.INSTANCE);
 
-    Journal journal = decisionJournalService.getById(command.getDecisionJournalId()).get();
+    Journal journal = journalService.getById(command.getDecisionJournalId()).get();
     return new ResponseEntity(getData(journal), HttpStatus.OK);
   }
 
-  @RequestMapping(value = "/decisionJournals.updateWhatHappened", method = {RequestMethod.GET, RequestMethod.POST})
+  @RequestMapping(value = "/journals.updateWhatHappened", method = {RequestMethod.GET, RequestMethod.POST})
   public ResponseEntity<?> updateWhatHappened(@RequestBody Map<String, String> body) {
     String id = body.getOrDefault("id", "").toString();
-    Optional<Journal> optional = decisionJournalService.getById(UUID.fromString(id));
+    Optional<Journal> optional = journalService.getById(UUID.fromString(id));
 
     if (optional.isPresent()) {
       String whatHappened = body.getOrDefault("whatHappened", "").toString();
@@ -92,7 +92,7 @@ public class DecisionJournalController {
       command.setWhatHappened(whatHappened);
       bus.dispatch(asCommandMessage(command), LoggingCallback.INSTANCE);
 
-      journal = decisionJournalService.getById(UUID.fromString(id)).get();
+      journal = journalService.getById(UUID.fromString(id)).get();
       return new ResponseEntity(getData(journal), HttpStatus.OK);
     } else {
       Map<String, Object> errMap = new HashMap<>(1);

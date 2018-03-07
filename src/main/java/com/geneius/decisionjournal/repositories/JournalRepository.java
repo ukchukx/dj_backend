@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface DecisionJournalRepository extends JpaRepository<Journal, UUID> {
+public interface JournalRepository extends JpaRepository<Journal, UUID> {
   List<Journal> findByAccountId(UUID accountId);
 
   Optional<Journal> findByAccountIdAndIndex(UUID id, String index);
