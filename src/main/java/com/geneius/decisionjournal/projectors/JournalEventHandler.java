@@ -15,6 +15,10 @@ public class JournalEventHandler {
 
   @EventHandler
   public void on(DecisionJournalCreated decisionJournalCreated) {
+    if (journalService.getById(decisionJournalCreated.getDecisionJournalId()).isPresent()) {
+      return;
+    }
+
     Journal journal = new Journal();
     journal.setId(decisionJournalCreated.getDecisionJournalId());
     journal.setAccountId(decisionJournalCreated.getAccountId());

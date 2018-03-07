@@ -18,6 +18,10 @@ public class AccountEventHandler {
 
   @EventHandler
   public void on(AccountCreated accountCreated) {
+    if (accountService.getById(accountCreated.getAccountId()).isPresent()) {
+      return;
+    }
+
     Account account = new Account();
     account.setId(accountCreated.getAccountId());
     account.setEmail(accountCreated.getEmail());
