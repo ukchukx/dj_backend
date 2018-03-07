@@ -25,7 +25,6 @@ public class DecisionJournalServiceImpl implements DecisionJournalService {
 
   @Override
   public List<Journal> listByAccount(UUID id) {
-    logger.warn("All journals: {}", listDecisionJournals());
     return decisionJournalRepository.findByAccountId(id);
   }
 
@@ -40,8 +39,10 @@ public class DecisionJournalServiceImpl implements DecisionJournalService {
   }
 
   @Override
-  public Optional<Journal> getByIdAndIndex(UUID id, String index) {
-    return decisionJournalRepository.findByIdAndIndex(id, index);
+  public Optional<Journal> getByAccountIdAndIndex(UUID id, String index) {
+    logger.warn("Id {}, Index {}", id, index);
+    logger.warn("res {}", decisionJournalRepository.findByAccountIdAndIndex(id, index));
+    return decisionJournalRepository.findByAccountIdAndIndex(id, index);
   }
 
   @Override

@@ -11,6 +11,6 @@ public interface DecisionJournalService {
   List<Journal> listByAccount(UUID id);
   Journal save(Journal journal);
   Optional<Journal> getById(UUID id);
-  Optional<Journal> getByIdAndIndex(UUID id, String index);
+  Optional<Journal> getByAccountIdAndIndex(UUID id, String index);
   void deleteAll();
 }

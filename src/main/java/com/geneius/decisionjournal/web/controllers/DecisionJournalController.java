@@ -62,7 +62,7 @@ public class DecisionJournalController {
     CommandBus bus = context.getBean(CommandBus.class);
     CreateDecisionJournal command = buildCreateCommand(body);
 
-    if (decisionJournalService.getByIdAndIndex(command.getDecisionJournalId(), command.getIndex()).isPresent()) {
+    if (decisionJournalService.getByAccountIdAndIndex(command.getAccountId(), command.getIndex()).isPresent()) {
       errMap.put("errorMessage", String.format("Index already used"));
       return new ResponseEntity(errMap, HttpStatus.BAD_REQUEST);
     }

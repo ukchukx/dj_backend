@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface DecisionJournalRepository extends JpaRepository<Journal, UUID> {
   List<Journal> findByAccountId(UUID accountId);
 
-  Optional<Journal> findByIdAndIndex(UUID id, String index);
+  Optional<Journal> findByAccountIdAndIndex(UUID id, String index);
 }
