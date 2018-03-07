@@ -1,6 +1,6 @@
 package com.geneius.decisionjournal.projectors;
 
-import com.geneius.decisionjournal.entities.DecisionJournal;
+import com.geneius.decisionjournal.entities.Journal;
 import com.geneius.decisionjournal.events.DecisionJournalCreated;
 import com.geneius.decisionjournal.events.DecisionJournalWhatHappenedChanged;
 import com.geneius.decisionjournal.services.DecisionJournalService;
@@ -15,42 +15,42 @@ public class DecisionJournalEventHandler {
 
   @EventHandler
   public void on(DecisionJournalCreated decisionJournalCreated) {
-    DecisionJournal decisionJournal = new DecisionJournal();
-    decisionJournal.setId(decisionJournalCreated.getDecisionJournalId());
-    decisionJournal.setAccountId(decisionJournalCreated.getAccountId());
-    decisionJournal.setIndex(decisionJournalCreated.getIndex());
-    decisionJournal.setDate(decisionJournalCreated.getDate());
-    decisionJournal.setReviewDate(decisionJournalCreated.getReviewDate());
-    decisionJournal.setDecision(decisionJournalCreated.getDecision());
-    decisionJournal.setSituation(decisionJournalCreated.getSituation());
-    decisionJournal.setProblemStatement(decisionJournalCreated.getProblemStatement());
-    decisionJournal.setVariables(decisionJournalCreated.getVariables());
-    decisionJournal.setComplications(decisionJournalCreated.getComplications());
-    decisionJournal.setAlternatives(decisionJournalCreated.getAlternatives());
-    decisionJournal.setOutcomeRange(decisionJournalCreated.getOutcomeRange());
-    decisionJournal.setExpectations(decisionJournalCreated.getExpectations());
-    decisionJournal.setOutcome(decisionJournalCreated.getOutcome());
-    decisionJournal.setWhatHappened(decisionJournalCreated.getWhatHappened());
-    decisionJournal.setEnergized(decisionJournalCreated.isEnergized());
-    decisionJournal.setFocused(decisionJournalCreated.isFocused());
-    decisionJournal.setRelaxed(decisionJournalCreated.isRelaxed());
-    decisionJournal.setConfident(decisionJournalCreated.isConfident());
-    decisionJournal.setTired(decisionJournalCreated.isTired());
-    decisionJournal.setAccepting(decisionJournalCreated.isAccepting());
-    decisionJournal.setAccommodating(decisionJournalCreated.isAccomodating());
-    decisionJournal.setAnxious(decisionJournalCreated.isAnxious());
-    decisionJournal.setResigned(decisionJournalCreated.isResigned());
-    decisionJournal.setFrustrated(decisionJournalCreated.isFrustrated());
-    decisionJournal.setAngry(decisionJournalCreated.isAngry());
-    decisionJournal.setExcited(decisionJournalCreated.isExcited());
-    decisionJournalService.save(decisionJournal);
+    Journal journal = new Journal();
+    journal.setId(decisionJournalCreated.getDecisionJournalId());
+    journal.setAccountId(decisionJournalCreated.getAccountId());
+    journal.setIndex(decisionJournalCreated.getIndex());
+    journal.setDate(decisionJournalCreated.getDate());
+    journal.setReviewDate(decisionJournalCreated.getReviewDate());
+    journal.setDecision(decisionJournalCreated.getDecision());
+    journal.setSituation(decisionJournalCreated.getSituation());
+    journal.setProblemStatement(decisionJournalCreated.getProblemStatement());
+    journal.setVariables(decisionJournalCreated.getVariables());
+    journal.setComplications(decisionJournalCreated.getComplications());
+    journal.setAlternatives(decisionJournalCreated.getAlternatives());
+    journal.setOutcomeRange(decisionJournalCreated.getOutcomeRange());
+    journal.setExpectations(decisionJournalCreated.getExpectations());
+    journal.setOutcome(decisionJournalCreated.getOutcome());
+    journal.setWhatHappened(decisionJournalCreated.getWhatHappened());
+    journal.setEnergized(decisionJournalCreated.isEnergized());
+    journal.setFocused(decisionJournalCreated.isFocused());
+    journal.setRelaxed(decisionJournalCreated.isRelaxed());
+    journal.setConfident(decisionJournalCreated.isConfident());
+    journal.setTired(decisionJournalCreated.isTired());
+    journal.setAccepting(decisionJournalCreated.isAccepting());
+    journal.setAccommodating(decisionJournalCreated.isAccomodating());
+    journal.setAnxious(decisionJournalCreated.isAnxious());
+    journal.setResigned(decisionJournalCreated.isResigned());
+    journal.setFrustrated(decisionJournalCreated.isFrustrated());
+    journal.setAngry(decisionJournalCreated.isAngry());
+    journal.setExcited(decisionJournalCreated.isExcited());
+    decisionJournalService.save(journal);
   }
 
 
   @EventHandler
   public void on(DecisionJournalWhatHappenedChanged changed) {
-    DecisionJournal decisionJournal = decisionJournalService.getById(changed.getDecisionJournalId()).get();
-    decisionJournal.setWhatHappened(changed.getWhatHappened());
-    decisionJournalService.save(decisionJournal);
+    Journal journal = decisionJournalService.getById(changed.getDecisionJournalId()).get();
+    journal.setWhatHappened(changed.getWhatHappened());
+    decisionJournalService.save(journal);
   }
 }

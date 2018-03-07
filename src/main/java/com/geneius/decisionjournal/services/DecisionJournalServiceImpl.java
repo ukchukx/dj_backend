@@ -1,7 +1,9 @@
 package com.geneius.decisionjournal.services;
 
-import com.geneius.decisionjournal.entities.DecisionJournal;
+import com.geneius.decisionjournal.entities.Journal;
 import com.geneius.decisionjournal.repositories.DecisionJournalRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,28 +16,31 @@ public class DecisionJournalServiceImpl implements DecisionJournalService {
   @Autowired
   private DecisionJournalRepository decisionJournalRepository;
 
+  private static Logger logger = LoggerFactory.getLogger(DecisionJournalService.class);
+
   @Override
-  public List<DecisionJournal> listDecisionJournals() {
+  public List<Journal> listDecisionJournals() {
     return decisionJournalRepository.findAll();
   }
 
   @Override
-  public List<DecisionJournal> listByAccount(UUID id) {
+  public List<Journal> listByAccount(UUID id) {
+    logger.warn("All journals: {}", listDecisionJournals());
     return decisionJournalRepository.findByAccountId(id);
   }
 
   @Override
-  public DecisionJournal save(DecisionJournal decisionJournal) {
-    return decisionJournalRepository.save(decisionJournal);
+  public Journal save(Journal journal) {
+    return decisionJournalRepository.save(journal);
   }
 
   @Override
-  public Optional<DecisionJournal> getById(UUID id) {
+  public Optional<Journal> getById(UUID id) {
     return decisionJournalRepository.findById(id);
   }
 
   @Override
-  public Optional<DecisionJournal> getByIdAndIndex(UUID id, String index) {
+  public Optional<Journal> getByIdAndIndex(UUID id, String index) {
     return decisionJournalRepository.findByIdAndIndex(id, index);
   }
 

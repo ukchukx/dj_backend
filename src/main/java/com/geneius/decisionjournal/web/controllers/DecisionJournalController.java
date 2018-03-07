@@ -3,7 +3,7 @@ package com.geneius.decisionjournal.web.controllers;
 import com.geneius.decisionjournal.commands.CreateDecisionJournal;
 import com.geneius.decisionjournal.commands.UpdateDecisionJournal;
 import com.geneius.decisionjournal.entities.Account;
-import com.geneius.decisionjournal.entities.DecisionJournal;
+import com.geneius.decisionjournal.entities.Journal;
 import com.geneius.decisionjournal.services.AccountService;
 import com.geneius.decisionjournal.services.DecisionJournalService;
 import org.axonframework.commandhandling.CommandBus;
@@ -16,10 +16,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static com.geneius.decisionjournal.web.utils.WebUtil.getData;
 import static org.axonframework.commandhandling.GenericCommandMessage.asCommandMessage;
@@ -39,18 +36,19 @@ public class DecisionJournalController {
   @RequestMapping(value = "/decisionJournals.list", method = {RequestMethod.GET, RequestMethod.POST})
   public ResponseEntity<?> list(Principal principal) {
     Account account = accountService.getAccountFromPrincipal(principal);
-    return new ResponseEntity(getData(decisionJournalService.listByAccount(account.getId())), HttpStatus.OK);
+    List<Journal> journals = decisionJournalService.listByAccount(account.getId());
+    return new ResponseEntity(getData(journals), HttpStatus.OK);
   }
 
   @RequestMapping(value = "/decisionJournals.get", method = {RequestMethod.GET, RequestMethod.POST})
   public ResponseEntity<?> getDecisionJournal(@RequestBody Map<String, String> body) {
     String id = body.getOrDefault("id", "").toString();
-    Optional<DecisionJournal> optional = decisionJournalService.getById(UUID.fromString(id));
+    Optional<Journal> optional = decisionJournalService.getById(UUID.fromString(id));
     if (optional.isPresent()) {
       return new ResponseEntity(getData(optional.get()), HttpStatus.OK);
     } else {
       Map<String, Object> errMap = new HashMap<>(1);
-      errMap.put("errorMessage", String.format("Decision journal %d not found", id));
+      errMap.put("errorMessage", String.format("Decision journal %s not found", id));
       return new ResponseEntity(errMap, HttpStatus.NOT_FOUND);
     }
   }
@@ -71,18 +69,18 @@ public class DecisionJournalController {
 
     bus.dispatch(asCommandMessage(command), LoggingCallback.INSTANCE);
 
-    DecisionJournal journal = decisionJournalService.getById(command.getDecisionJournalId()).get();
+    Journal journal = decisionJournalService.getById(command.getDecisionJournalId()).get();
     return new ResponseEntity(getData(journal), HttpStatus.OK);
   }
 
   @RequestMapping(value = "/decisionJournals.updateWhatHappened", method = {RequestMethod.GET, RequestMethod.POST})
   public ResponseEntity<?> updateWhatHappened(@RequestBody Map<String, String> body) {
     String id = body.getOrDefault("id", "").toString();
-    Optional<DecisionJournal> optional = decisionJournalService.getById(UUID.fromString(id));
+    Optional<Journal> optional = decisionJournalService.getById(UUID.fromString(id));
 
     if (optional.isPresent()) {
       String whatHappened = body.getOrDefault("whatHappened", "").toString();
-      DecisionJournal journal = optional.get();
+      Journal journal = optional.get();
 
       if (!journal.getWhatHappened().isEmpty() || whatHappened == null || whatHappened.trim().isEmpty()) {
         return new ResponseEntity(getData(journal), HttpStatus.OK);
@@ -98,7 +96,7 @@ public class DecisionJournalController {
       return new ResponseEntity(getData(journal), HttpStatus.OK);
     } else {
       Map<String, Object> errMap = new HashMap<>(1);
-      errMap.put("errorMessage", String.format("Decision journal %d not found", id));
+      errMap.put("errorMessage", String.format("Decision journal %s not found", id));
       return new ResponseEntity(errMap, HttpStatus.NOT_FOUND);
     }
   }

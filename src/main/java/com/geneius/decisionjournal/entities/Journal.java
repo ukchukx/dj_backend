@@ -13,13 +13,15 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "decision_journals")
+@Table(name = "journals")
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class DecisionJournal {
+public class Journal {
   @Id
   @Type(type="pg-uuid")
   private UUID id;
+  @Type(type="pg-uuid")
+  @Column(nullable = false)
   private UUID accountId;
   private String index;
   private long date;

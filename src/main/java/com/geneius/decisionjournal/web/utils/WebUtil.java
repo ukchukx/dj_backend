@@ -1,6 +1,5 @@
 package com.geneius.decisionjournal.web.utils;
 
-import com.geneius.decisionjournal.entities.Account;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
