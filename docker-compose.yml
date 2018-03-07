@@ -1,0 +1,11 @@
+version: '2'
+services:
+   dj_backend:
+    image: dj_backend
+    container_name: dj_backend
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - DJ_DB=${DJ_DB}
+      - DJ_DB_USER=${DJ_DB_USER}
+      - DJ_DB_PASS=${DJ_DB_PASS}
