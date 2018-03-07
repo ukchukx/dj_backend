@@ -1,5 +1,7 @@
 package com.geneius.decisionjournal;
 
+import org.axonframework.config.EventHandlingConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,5 +19,10 @@ public class DecisionjournalApplication {
   @Bean
   public BCryptPasswordEncoder bCryptPasswordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Autowired
+  public void configure(EventHandlingConfiguration config) {
+    config.usingTrackingProcessors();
   }
 }
