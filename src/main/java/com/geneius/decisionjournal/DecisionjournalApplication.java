@@ -21,8 +21,8 @@ public class DecisionjournalApplication {
     return new BCryptPasswordEncoder();
   }
 
-  @Autowired
-  public void configure(EventHandlingConfiguration config) {
-    config.usingTrackingProcessors();
-  }
+  // @Autowired
+  // public void configure(EventHandlingConfiguration config) {
+  //  config.usingTrackingProcessors();
+  // }
 }
